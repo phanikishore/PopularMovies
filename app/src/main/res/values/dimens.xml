@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+
+    <dimen name="padding_4dp">@dimen/dimen_4dp</dimen>
+    <dimen name="padding_8dp">@dimen/dimen_8dp</dimen>
+    <dimen name="padding_16dp">@dimen/dimen_16dp</dimen>
+</resources>
