@@ -14,9 +14,13 @@ import retrofit2.http.Query;
 public interface PopularMoviesAPIServices {
 
     @GET("configuration")
-    Call<Configuration> getConfiguration();
+    Call<Configuration> getConfiguration(@Query("api_key") String apikey);
 
     @GET("movie/popular")
-    Call<DashBoardResponse> getDashBoardResponse(@Query("api_key") String apikey,
+    Call<DashBoardResponse> getPopularMovies(@Query("api_key") String apikey,
+                                                 @Query("page") int pageNo);
+
+    @GET("movie/top_rated")
+    Call<DashBoardResponse> getTopRatedMovies(@Query("api_key") String apikey,
                                                  @Query("page") int pageNo);
 }

@@ -1,7 +1,7 @@
 package com.udacity.kishore.popularmovies.dashboard.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.udacity.kishore.popularmovies.BaseReposnse;
+import com.udacity.kishore.popularmovies.base.BaseReposnse;
 
 import java.util.List;
 

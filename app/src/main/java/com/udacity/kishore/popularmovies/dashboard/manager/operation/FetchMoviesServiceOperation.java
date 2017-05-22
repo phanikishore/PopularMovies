@@ -1,31 +1,26 @@
 package com.udacity.kishore.popularmovies.dashboard.manager.operation;
 
-import com.udacity.kishore.popularmovies.PopularMoviesApplication;
 import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.manager.WebServiceOperation;
-import com.udacity.kishore.popularmovies.utils.AppUtils;
 
 /**
- * Created by kishorea on 19/05/17.
+ * Created by kishorea on 22/05/17.
  */
 
-public class DashBoardServiceOperation extends WebServiceOperation<DashBoardResponse> {
+public abstract class FetchMoviesServiceOperation extends WebServiceOperation<DashBoardResponse> {
 
-    public interface DashBoardServiceListener {
+    public FetchMoviesServiceOperation(FetchMoviesServiceListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface FetchMoviesServiceListener {
         void onSuccess(DashBoardResponse response);
 
         void onError(PopularMovieException exception);
     }
 
-    private DashBoardServiceListener mListener;
-
-    public DashBoardServiceOperation(int pageNo, DashBoardServiceListener listener) {
-        mListener = listener;
-        mCall = PopularMoviesApplication.getInstance().getServiceInstance()
-                .getDashBoardResponse(AppUtils.API_KEY, pageNo);
-        enqueue();
-    }
+    private FetchMoviesServiceListener mListener;
 
     @Override
     public void onSuccess(DashBoardResponse response) {

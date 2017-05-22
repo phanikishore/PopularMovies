@@ -2,4 +2,6 @@
     <string name="app_name">Popular Movies</string>
     <string name="string_exception" formatted="false">Got Error Code as %d and Message: %s, Please check.</string>
     <string name="string_no_message" formatted="false">No Message</string>
+    <string name="string_popular">Popular</string>
+    <string name="string_top_rated">Top Rated</string>
 </resources>
