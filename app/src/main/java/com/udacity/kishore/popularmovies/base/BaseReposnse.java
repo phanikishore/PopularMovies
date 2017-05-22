@@ -1,4 +1,4 @@
-package com.udacity.kishore.popularmovies;
+package com.udacity.kishore.popularmovies.base;
 
 import com.google.gson.annotations.SerializedName;
 

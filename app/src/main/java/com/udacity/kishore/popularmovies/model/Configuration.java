@@ -17,21 +17,4 @@ public class Configuration {
     @SerializedName("change_keys")
     public List<String> changeKeyList = null;
 
-
-    class ImageConfiguration {
-        @SerializedName("base_url")
-        public String baseUrl;
-        @SerializedName("secure_base_url")
-        public String secureBaseUrl;
-        @SerializedName("backdrop_sizes")
-        public List<String> backdropSizeList = null;
-        @SerializedName("logo_sizes")
-        public List<String> logoSizeList = null;
-        @SerializedName("poster_sizes")
-        public List<String> posterSizeList = null;
-        @SerializedName("profile_sizes")
-        public List<String> profileSizeList = null;
-        @SerializedName("still_sizes")
-        public List<String> stillSizeList = null;
-    }
 }

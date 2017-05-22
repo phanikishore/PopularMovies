@@ -1,6 +1,8 @@
 package com.udacity.kishore.popularmovies.dashboard.manager;
 
-import com.udacity.kishore.popularmovies.dashboard.manager.operation.DashBoardServiceOperation;
+import com.udacity.kishore.popularmovies.dashboard.manager.operation.FetchMoviesServiceOperation;
+import com.udacity.kishore.popularmovies.dashboard.manager.operation.PopularMoviesServiceOperation;
+import com.udacity.kishore.popularmovies.dashboard.manager.operation.TopRatedMoviesServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 
@@ -16,8 +18,24 @@ public class DashBoardManager {
         void onError(PopularMovieException exception);
     }
 
-    public void getDashBoardList(int pageNo, final DashBoardManagerListener listener) {
-        new DashBoardServiceOperation(pageNo, new DashBoardServiceOperation.DashBoardServiceListener() {
+    public void getPopularMovies(int pageNo, final DashBoardManagerListener listener) {
+        new PopularMoviesServiceOperation(pageNo, new FetchMoviesServiceOperation.FetchMoviesServiceListener() {
+            @Override
+            public void onSuccess(DashBoardResponse response) {
+                if (listener != null)
+                    listener.onSuccess(response);
+            }
+
+            @Override
+            public void onError(PopularMovieException exception) {
+                if (listener != null)
+                    listener.onError(exception);
+            }
+        });
+    }
+
+    public void getTopRatedMovies(int pageNo, final DashBoardManagerListener listener) {
+        new TopRatedMoviesServiceOperation(pageNo, new FetchMoviesServiceOperation.FetchMoviesServiceListener() {
             @Override
             public void onSuccess(DashBoardResponse response) {
                 if (listener != null)
