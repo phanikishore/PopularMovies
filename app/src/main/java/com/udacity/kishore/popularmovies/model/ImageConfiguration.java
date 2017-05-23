@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public class ImageConfiguration {
+
     @SerializedName("base_url")
     public String baseUrl;
     @SerializedName("secure_base_url")

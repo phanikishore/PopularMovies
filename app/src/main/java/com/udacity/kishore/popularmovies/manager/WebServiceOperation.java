@@ -2,6 +2,7 @@ package com.udacity.kishore.popularmovies.manager;
 
 import com.google.gson.Gson;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
+import com.udacity.kishore.popularmovies.utils.AppUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,13 +28,18 @@ public abstract class WebServiceOperation<T> implements Callback<T> {
     }
 
     public void enqueue() {
-        mCall.enqueue(this);
+        System.out.println("Is Network Available? " + AppUtils.isNetworkAvailable());
+        System.out.println("Url: " + mCall.request().url());
+        if (AppUtils.isNetworkAvailable()) {
+            mCall.enqueue(this);
+        } else {
+            onError(new PopularMovieException("Network Not Available!!! Try after sometime."));
+        }
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
         onError(new PopularMovieException(t.getMessage()));
-
     }
 
     public abstract void onSuccess(T response);

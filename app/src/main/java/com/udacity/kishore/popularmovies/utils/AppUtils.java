@@ -12,7 +12,8 @@ import com.udacity.kishore.popularmovies.PopularMoviesApplication;
 
 public class AppUtils {
 
-    public static final String API_KEY = "a3d203c426fb20f97a4ce8f3fd601e32";
+    //TODO: PROVIDE YOUR API KEY
+    public static final String API_KEY = "{PROVIDE HERE YOUR API KEY}";
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     public static boolean isNetworkAvailable() {
