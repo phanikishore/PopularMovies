@@ -22,14 +22,13 @@ public abstract class WebServiceOperation<T> implements Callback<T> {
             System.out.println("Response Body: " + new Gson().toJson(response.body()));
             onSuccess(response.body());
         } else {
-            System.out.println("Response Error Code: " + response.code() + "\nResponse Error Body: " + response.message());
+            System.out.println("Response Body Error Code: " + response.code() + "\nResponse Error Body: " + response.message());
             onError(new PopularMovieException(response.code(), response.message()));
         }
     }
 
     public void enqueue() {
-        System.out.println("Is Network Available? " + AppUtils.isNetworkAvailable());
-        System.out.println("Url: " + mCall.request().url());
+        System.out.println("Request Url: " + mCall.request().url());
         if (AppUtils.isNetworkAvailable()) {
             mCall.enqueue(this);
         } else {
