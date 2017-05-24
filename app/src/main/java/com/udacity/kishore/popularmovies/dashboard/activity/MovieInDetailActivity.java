@@ -59,7 +59,7 @@ public class MovieInDetailActivity extends BaseActivity {
                         mMovieDetailResponse.posterPath}), mImageViewPoster);
                 mTextViewTitle.setText(mMovieDetailResponse.originalTitle);
                 mTextViewOverview.setText(mMovieDetailResponse.overview);
-                mTextViewReleasedOn.setText(String.format(Locale.getDefault(), "Release on %s", mMovieDetailResponse.releaseDate));
+                mTextViewReleasedOn.setText(String.format(Locale.getDefault(), "Released on %s", mMovieDetailResponse.releaseDate));
                 mTextViewRatings.setText(String.format(Locale.getDefault(), "Rating: %1$,.1f", mMovieDetailResponse.voteAverage));
             }
 
