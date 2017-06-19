@@ -1,11 +1,9 @@
 package com.udacity.kishore.popularmovies.dashboard.manager;
 
-import com.udacity.kishore.popularmovies.dashboard.manager.operation.FetchMovieDetailsServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.manager.operation.FetchMoviesServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.manager.operation.PopularMoviesServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.manager.operation.TopRatedMoviesServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
-import com.udacity.kishore.popularmovies.dashboard.model.MovieDetailResponse;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 
 /**
@@ -20,11 +18,7 @@ public class DashBoardManager {
         void onError(PopularMovieException exception);
     }
 
-    public interface OnMovieDetailsListener {
-        void onSuccess(MovieDetailResponse response);
 
-        void onError(PopularMovieException exception);
-    }
 
     public void getPopularMovies(int pageNo, final DashBoardManagerListener listener) {
         new PopularMoviesServiceOperation(pageNo, new FetchMoviesServiceOperation.FetchMoviesServiceListener() {
@@ -58,19 +52,5 @@ public class DashBoardManager {
         });
     }
 
-    public void getMovieDetails(int movieId, final OnMovieDetailsListener listener) {
-        new FetchMovieDetailsServiceOperation(movieId, new FetchMovieDetailsServiceOperation.OnMovieDetailsServiceListener() {
-            @Override
-            public void onSuccess(MovieDetailResponse response) {
-                if (listener != null)
-                    listener.onSuccess(response);
-            }
 
-            @Override
-            public void onError(PopularMovieException exception) {
-                if (listener != null)
-                    listener.onError(exception);
-            }
-        });
-    }
 }

@@ -16,28 +16,31 @@ import com.udacity.kishore.popularmovies.dashboard.manager.DashBoardManager;
 import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
 import com.udacity.kishore.popularmovies.dashboard.model.MovieItem;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
+import com.udacity.kishore.popularmovies.movie.activity.MovieDetailsActivity;
 import com.udacity.kishore.popularmovies.utils.IntentUtils;
 import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DashBoardActivity extends BaseActivity implements DashBoardManager.DashBoardManagerListener {
 
     private int PAGE_NO = 1;
 
-    private ProgressBar mLoadingIndicator;
 
     private MoviesRecyclerViewAdapter mMoviesRecyclerViewAdapter;
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.rv_movieslist) RecyclerView mRecyclerView;
+    @BindView(R.id.progressbar_loading_indicator) ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.progressbar_loading_indicator);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movieslist);
+        ButterKnife.bind(this);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(new MoviesRecyclerViewAdapter.OnMovieClickListener() {
             @Override
             public void OnMovieClicked(MovieItem movie) {
-                Intent intent = new Intent(DashBoardActivity.this, MovieInDetailActivity.class);
+                Intent intent = new Intent(DashBoardActivity.this, MovieDetailsActivity.class);
                 intent.putExtra(IntentUtils.INTENT_MOVIE_ID, movie.id);
                 startActivity(intent);
             }

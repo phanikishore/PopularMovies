@@ -1,7 +1,7 @@
-package com.udacity.kishore.popularmovies.dashboard.manager.operation;
+package com.udacity.kishore.popularmovies.movie.manager.operation;
 
 import com.udacity.kishore.popularmovies.PopularMoviesApplication;
-import com.udacity.kishore.popularmovies.dashboard.model.MovieDetailResponse;
+import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.manager.WebServiceOperation;
 import com.udacity.kishore.popularmovies.utils.AppUtils;

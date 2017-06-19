@@ -18,6 +18,9 @@ import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by kishorea on 19/05/17.
  */
@@ -71,27 +74,21 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.tv_movie_title)
         TextView textViewTitle;
+        @BindView(R.id.imageview_movie_image)
         ImageView imageViewMoviePoster;
         Context context;
 
         MovieViewHolder(Context context, View itemView) {
             super(itemView);
             this.context = context;
-            textViewTitle = (TextView) itemView.findViewById(R.id.tv_movie_title);
-            imageViewMoviePoster = (ImageView) itemView.findViewById(R.id.imageview_movie_image);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-/*
-            if (mToast != null) {
-                mToast.cancel();
-            }
-            mToast = Toast.makeText(PopularMoviesApplication.getInstance(), mList.get(getAdapterPosition()).title, Toast.LENGTH_SHORT);
-            mToast.show();
-*/
             if (mClickListener != null) {
                 mClickListener.OnMovieClicked(getMovieItem(getAdapterPosition()));
             }

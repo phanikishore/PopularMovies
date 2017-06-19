@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:context="com.udacity.kishore.popularmovies.dashboard.activity.MovieInDetailActivity"
+        tools:context="com.udacity.kishore.popularmovies.movie.activity.MovieDetailsActivity"
         tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/dimen_16dp">
+            android:padding="@dimen/dimen_16dip">
 
 
             <LinearLayout
@@ -30,7 +30,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    app:cardCornerRadius="@dimen/dimen_8dp"
+                    app:cardCornerRadius="@dimen/dimen_8dip"
                     app:cardElevation="@dimen/cardview_default_elevation">
 
                     <ImageView
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
                     android:orientation="vertical"
-                    android:padding="@dimen/dimen_8dp">
+                    android:padding="@dimen/dimen_8dip">
 
                     <TextView
                         style="@style/TextAppearance.AppCompat.Title"
@@ -82,7 +82,7 @@
                         style="@style/TextAppearance.AppCompat.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_8dp"
+                        android:layout_marginTop="@dimen/dimen_8dip"
                         android:text="@string/label_overview" />
 
                     <TextView
@@ -100,14 +100,14 @@
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_8dip"
                 android:text="@string/label_trailers" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_movie_trailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_8dp" />
+                android:layout_marginTop="@dimen/dimen_8dip" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:layout_marginTop="@dimen/dimen_8dip"
                     android:text="@string/label_reviews" />
 
                 <android.support.v4.widget.Space
