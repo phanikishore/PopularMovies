@@ -8,8 +8,7 @@
     android:paddingEnd="@dimen/padding_8dp"
     android:paddingLeft="@dimen/padding_8dp"
     android:paddingRight="@dimen/padding_8dp"
-    android:paddingStart="@dimen/padding_8dp"
-    tools:context="com.udacity.kishore.popularmovies.dashboard.activity.DashBoardActivity">
+    android:paddingStart="@dimen/padding_8dp">
 
     <ProgressBar
         android:id="@+id/progressbar_loading_indicator"

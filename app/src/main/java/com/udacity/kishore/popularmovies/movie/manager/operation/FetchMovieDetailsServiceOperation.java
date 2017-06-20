@@ -23,7 +23,6 @@ public class FetchMovieDetailsServiceOperation extends WebServiceOperation<Movie
     public FetchMovieDetailsServiceOperation(int movieId, OnMovieDetailsServiceListener listener) {
         this.listener = listener;
         mCall = PopularMoviesApplication.getInstance().getServiceInstance().getMovieDetails(movieId, AppUtils.API_KEY);
-        enqueue();
     }
 
     @Override
