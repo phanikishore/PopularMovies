@@ -18,4 +18,5 @@
     <dimen name="padding_16dp">@dimen/dimen_16dip</dimen>
     <dimen name="dimen_18sp">18sp</dimen>
     <dimen name="dimen_dot_size">@dimen/dimen_12dip</dimen>
+    <dimen name="dimen_16sp">16sp</dimen>
 </resources>

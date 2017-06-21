@@ -17,8 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/dimen_16dip"
-            tools:context="com.udacity.kishore.popularmovies.movie.activity.MovieDetailsActivity">
+            android:padding="@dimen/dimen_16dip">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -128,8 +127,8 @@
 
             <com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator
                 android:id="@+id/viewpager_reviews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent" android:visibility="gone"
+                android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
 

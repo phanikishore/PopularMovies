@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/dimen_8dp"
+    android:layout_margin="@dimen/dimen_8dip"
     app:cardCornerRadius="@dimen/dimen_4dip"
     app:cardElevation="@dimen/cardview_default_elevation">
 
@@ -32,7 +32,7 @@
             android:layout_gravity="center|start"
             android:ellipsize="marquee"
             android:maxLines="2"
-            android:paddingBottom="@dimen/dimen_8dp"
+            android:paddingBottom="@dimen/dimen_8dip"
             android:paddingEnd="@dimen/dimen_0dip"
             android:paddingLeft="@dimen/dimen_4dip"
             android:paddingRight="@dimen/dimen_0dip"

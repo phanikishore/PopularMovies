@@ -4,6 +4,8 @@ import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
 import com.udacity.kishore.popularmovies.model.BaseReposnse;
 import com.udacity.kishore.popularmovies.model.Configuration;
 import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
+import com.udacity.kishore.popularmovies.movie.model.ReviewResponse;
+import com.udacity.kishore.popularmovies.movie.model.TrailerResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -29,8 +31,8 @@ public interface PopularMoviesAPIServices {
     Call<MovieDetailResponse> getMovieDetails(@Path("movie_id") int movieId, @Query("api_key") String apikey);
 
     @GET("movie/{movie_id}/videos")
-    Call<BaseReposnse> getMovieTrailers(@Path("movie_id") int movieId, @Query("api_key") String apikey);
+    Call<TrailerResponse> getMovieTrailers(@Path("movie_id") int movieId, @Query("api_key") String apikey);
 
     @GET("movie/{movie_id}/reviews")
-    Call<BaseReposnse> getMovieReviews(@Path("movie_id") int movieId, @Query("api_key") String apikey);
+    Call<ReviewResponse> getMovieReviews(@Path("movie_id") int movieId, @Query("api_key") String apikey);
 }

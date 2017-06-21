@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:context="com.udacity.kishore.popularmovies.movie.activity.MovieDetailsActivity"
         tools:visibility="visible">
 
         <LinearLayout
@@ -122,7 +121,7 @@
                     android:text="@string/label_reviews" />
 
                 <android.support.v4.widget.Space
-                    android:layout_width="@dimen/dimen_8dp"
+                    android:layout_width="@dimen/dimen_8dip"
                     android:layout_height="match_parent" />
 
                 <TextView
@@ -130,15 +129,15 @@
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:layout_marginTop="@dimen/dimen_8dip"
                     android:text="@string/label_reviews" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textview_movie_reviews"
-                android:layout_width="wrap_content"
+            <com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator
+                android:id="@+id/viewpager_reviews"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_8dp" />
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

@@ -3,8 +3,10 @@ package com.udacity.kishore.popularmovies.widget;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +25,7 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
     ViewPager mViewPager;
     @BindView(R.id.recyclerview_dots)
     RecyclerView mRecyclerview;
-    private DotRecyclerView mDotRecyclerView;
+    private DotRecyclerView mDotRecyclerViewAdapter;
 
     public ViewPagerWithPageIndicator(Context context) {
         super(context);
@@ -38,8 +40,10 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
     private void initView() {
         inflate(getContext(), R.layout.view_viewpagerwithpageindicator, this);
         ButterKnife.bind(this);
-        mDotRecyclerView = new DotRecyclerView();
-        mRecyclerview.setAdapter(mDotRecyclerView);
+        System.out.println("Custom View is Creating");
+        mDotRecyclerViewAdapter = new DotRecyclerView();
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        mRecyclerview.setAdapter(mDotRecyclerViewAdapter);
         mViewPager.addOnPageChangeListener(this);
     }
 
@@ -48,18 +52,18 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
     public void setAdapter(PagerAdapter adapter) {
         super.setAdapter(adapter);
         mViewPager.setAdapter(adapter);
-        mDotRecyclerView.setDots(adapter.getCount());
+        //mDotRecyclerViewAdapter.setDots(adapter.getCount());
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        mDotRecyclerView.setIndex(position);
+        mDotRecyclerViewAdapter.setIndex(position);
     }
 
     @Override
     public void onPageSelected(int position) {
-        mDotRecyclerView.setIndex(position);
+        mDotRecyclerViewAdapter.setIndex(position);
     }
 
     @Override
@@ -67,10 +71,10 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
 
     }
 
-    private class DotRecyclerView extends RecyclerView.Adapter<DotRecyclerView.ViewHolder> {
+     class DotRecyclerView extends RecyclerView.Adapter<DotRecyclerView.ViewHolder> {
 
         private int selectedIndex = 0;
-        private int count = 0;
+        private int count = 3;
 
         private void setIndex(int index) {
             selectedIndex = index;
@@ -78,6 +82,7 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
         }
 
         private void setDots(int count) {
+            System.out.println("Count: "+count);
             this.count = count;
             selectedIndex = 0;
             notifyDataSetChanged();
@@ -85,11 +90,13 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(inflate(parent.getContext(), R.layout.item_dot_indicator, parent));
+            System.out.println("Creating ViewHolder Object");
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dot_indicator,parent,false));
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            System.out.println("Recyclerview Count: "+count+" Position: "+position);
             if (position == selectedIndex) {
                 holder.imageView.setImageResource(R.drawable.drawable_dot_active);
             } else {
@@ -99,6 +106,7 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
 
         @Override
         public int getItemCount() {
+            System.out.println("Recyclerview Count: "+count);
             return count;
         }
 
@@ -106,7 +114,7 @@ public class ViewPagerWithPageIndicator extends ViewPager implements ViewPager.O
             @BindView(R.id.imageview_dot)
             ImageView imageView;
 
-            private ViewHolder(View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
