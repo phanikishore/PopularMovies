@@ -31,11 +31,15 @@ public class MovieTrailersOperation extends WebServiceOperation<TrailerResponse>
 
     @Override
     public void onSuccess(TrailerResponse response) {
-
+        if (mListener != null) {
+            mListener.onSuccess(response);
+        }
     }
 
     @Override
     public void onError(PopularMovieException exception) {
-
+        if (mListener != null) {
+            mListener.onError(exception);
+        }
     }
 }

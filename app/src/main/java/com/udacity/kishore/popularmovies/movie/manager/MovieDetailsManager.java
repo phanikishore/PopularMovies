@@ -1,10 +1,10 @@
 package com.udacity.kishore.popularmovies.movie.manager;
 
+import com.udacity.kishore.popularmovies.exception.PopularMovieException;
+import com.udacity.kishore.popularmovies.movie.manager.operation.FetchMovieDetailsServiceOperation;
 import com.udacity.kishore.popularmovies.movie.manager.operation.MovieReviewsOperation;
 import com.udacity.kishore.popularmovies.movie.manager.operation.MovieTrailersOperation;
 import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
-import com.udacity.kishore.popularmovies.exception.PopularMovieException;
-import com.udacity.kishore.popularmovies.movie.manager.operation.FetchMovieDetailsServiceOperation;
 import com.udacity.kishore.popularmovies.movie.model.ReviewResponse;
 import com.udacity.kishore.popularmovies.movie.model.TrailerResponse;
 
@@ -71,14 +71,16 @@ public class MovieDetailsManager {
         new MovieTrailersOperation(movieId, new MovieTrailersOperation.OnMovieVideosOperationListener() {
             @Override
             public void onSuccess(TrailerResponse response) {
-                if (listener != null)
+                if (listener != null) {
                     listener.onSuccess(response);
+                }
             }
 
             @Override
             public void onError(PopularMovieException execption) {
-                if (listener != null)
+                if (listener != null) {
                     listener.onError(execption);
+                }
             }
         }).enqueue();
     }

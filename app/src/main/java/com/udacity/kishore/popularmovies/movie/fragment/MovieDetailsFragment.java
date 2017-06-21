@@ -2,7 +2,6 @@ package com.udacity.kishore.popularmovies.movie.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import com.udacity.kishore.popularmovies.movie.adapter.ReviewViewPagerAdapter;
 import com.udacity.kishore.popularmovies.movie.manager.MovieDetailsManager;
 import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
 import com.udacity.kishore.popularmovies.movie.model.ReviewResponse;
-import com.udacity.kishore.popularmovies.movie.model.TrailerResponse;
 import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
 import com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator;
 
@@ -38,7 +36,7 @@ public class MovieDetailsFragment extends BaseFragment {
     private int mSelectedMovieId;
     private MovieDetailResponse mMovieDetailResponse;
     private ReviewResponse mReviewResponse;
-    private TrailerResponse mTrailerResponse;
+
     @BindView(R.id.progressbar_loading_indicator)
     ProgressBar mProgressBar;
     @BindView(R.id.scrollview_container)
@@ -57,8 +55,6 @@ public class MovieDetailsFragment extends BaseFragment {
     TextView mTextViewMoreReviews;
     @BindView(R.id.viewpager_reviews)
     ViewPagerWithPageIndicator mViewPager;
-    @BindView(R.id.recyclerview_movie_trailer)
-    RecyclerView mTrailerRecyclerView;
 
     private ReviewViewPagerAdapter mReviewViewPagerAdapter;
 
@@ -72,7 +68,7 @@ public class MovieDetailsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_in_detail, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -88,6 +84,7 @@ public class MovieDetailsFragment extends BaseFragment {
                 replace(R.id.layout_container, ReviewsFragment.newInstance(mReviewResponse));
             }
         });
+        replaceChildFragment(R.id.framelayout_movie_trailer, TrailersFragment.newInstance(mSelectedMovieId));
         MovieDetailsManager mMovieManager = new MovieDetailsManager();
         mMovieManager.getMovieDetails(mSelectedMovieId, new MovieDetailsManager.OnMovieDetailsListener() {
             @Override
@@ -121,17 +118,6 @@ public class MovieDetailsFragment extends BaseFragment {
                 } else {
                     mTextViewMoreReviews.setText("No Reviews");
                 }
-            }
-
-            @Override
-            public void onError(PopularMovieException exception) {
-
-            }
-        });
-        mMovieManager.getMovieTrailers(mSelectedMovieId, new MovieDetailsManager.OnMovieTrailersListener() {
-            @Override
-            public void onSuccess(TrailerResponse response) {
-                mTrailerResponse = response;
             }
 
             @Override

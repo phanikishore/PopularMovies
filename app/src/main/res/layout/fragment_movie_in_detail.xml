@@ -94,10 +94,10 @@
                 android:layout_marginTop="@dimen/dimen_8dip"
                 android:text="@string/label_trailers" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview_movie_trailer"
+            <FrameLayout
+                android:id="@+id/framelayout_movie_trailer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content" android:minHeight="150dp"
                 android:layout_marginTop="@dimen/dimen_8dip" />
 
             <LinearLayout
