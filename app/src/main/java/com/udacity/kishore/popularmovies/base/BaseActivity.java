@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.model.ImageConfiguration;
+import com.squareup.picasso.Callback;
 
 /**
  * Created by kishorea on 22/05/17.
@@ -27,8 +28,13 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void loadImage(String uri, ImageView view) {
-        Picasso.with(this).load(uri).placeholder(R.mipmap.ic_launcher_round).into(view);
+    public void loadImage(String uri, ImageView view){
+        loadImage(uri,view,new Callback.EmptyCallback());
+    }
+
+    public void loadImage(String uri, ImageView view, Callback listener) {
+        Callback mListener = listener != null ? listener : new Callback.EmptyCallback();
+        Picasso.with(this).load(uri).into(view,mListener);
     }
 
     public void setTitle(int resId) {
@@ -60,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void replace(int containerId, BaseFragment fragment, boolean addToBackStack) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(containerId, fragment,String.valueOf(fragmentManager.getBackStackEntryCount()));
+        fragmentTransaction.replace(containerId, fragment, String.valueOf(fragmentManager.getBackStackEntryCount()));
         if (addToBackStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
@@ -72,14 +78,14 @@ public class BaseActivity extends AppCompatActivity {
         if (count <= 1) {
             finish();
         } else {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag((count-1)+"");
-            if(fragment!=null){
-                ((BaseFragment)fragment).onBacPressed();
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag((count - 1) + "");
+            if (fragment != null) {
+                ((BaseFragment) fragment).onBacPressed();
             }
         }
     }
 
-    protected void pop(){
+    protected void pop() {
         getSupportFragmentManager().popBackStackImmediate();
     }
 }

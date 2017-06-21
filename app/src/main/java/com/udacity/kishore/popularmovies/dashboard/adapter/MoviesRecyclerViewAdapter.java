@@ -58,7 +58,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         Configuration configuration = PopularMoviesPreference.getInstance().getImageConfiguration();
         String uri = TextUtils.join("", new String[]{
                 configuration.imageConfiguration.baseUrl,
-                configuration.imageConfiguration.posterSizeList.get(4),
+                configuration.imageConfiguration.posterSizeList.get(3),
                 item.posterPath
         });
         ((BaseActivity) holder.context).loadImage(uri, holder.imageViewMoviePoster);

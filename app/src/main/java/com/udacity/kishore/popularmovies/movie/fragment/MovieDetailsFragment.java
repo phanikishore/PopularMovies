@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -36,7 +37,8 @@ public class MovieDetailsFragment extends BaseFragment {
     private int mSelectedMovieId;
     private MovieDetailResponse mMovieDetailResponse;
     private ReviewResponse mReviewResponse;
-
+    @BindView(R.id.imagebutton_favorite)
+    ImageButton mImageButtonFavorite;
     @BindView(R.id.progressbar_loading_indicator)
     ProgressBar mProgressBar;
     @BindView(R.id.scrollview_container)
@@ -78,6 +80,7 @@ public class MovieDetailsFragment extends BaseFragment {
         //ButterKnife.bind(this, view);
         mImageConfig = PopularMoviesPreference.getInstance().getImageConfiguration().imageConfiguration;
         setTitle(R.string.string_movie_details);
+        setSubtitle("");
         mTextViewMoreReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +88,12 @@ public class MovieDetailsFragment extends BaseFragment {
             }
         });
         replaceChildFragment(R.id.framelayout_movie_trailer, TrailersFragment.newInstance(mSelectedMovieId));
+        mImageButtonFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mImageButtonFavorite.setImageResource(R.drawable.ic_favorite_active);
+            }
+        });
         MovieDetailsManager mMovieManager = new MovieDetailsManager();
         mMovieManager.getMovieDetails(mSelectedMovieId, new MovieDetailsManager.OnMovieDetailsListener() {
             @Override
@@ -94,7 +103,7 @@ public class MovieDetailsFragment extends BaseFragment {
                 mMovieDetailResponse = response;
                 loadImage(TextUtils.join("", new String[]{
                         mImageConfig.baseUrl,
-                        mImageConfig.posterSizeList.get(5),
+                        mImageConfig.posterSizeList.get(3),
                         mMovieDetailResponse.posterPath}), mImageViewPoster);
                 mTextViewTitle.setText(mMovieDetailResponse.originalTitle);
                 mTextViewOverview.setText(mMovieDetailResponse.overview);
