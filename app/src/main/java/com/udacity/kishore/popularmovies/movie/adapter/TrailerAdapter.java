@@ -1,12 +1,16 @@
 package com.udacity.kishore.popularmovies.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.youtube.player.YouTubeIntents;
+import com.squareup.picasso.Picasso;
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.base.BaseActivity;
 import com.udacity.kishore.popularmovies.movie.model.Trailer;
@@ -41,10 +45,23 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
-        Trailer trailer = getItem(position);
+        final Trailer trailer = getItem(position);
+        final TrailerViewHolder trailerViewHolder = holder;
+
         ((BaseActivity) mContext).loadImage(
                 String.format(Locale.getDefault(), AppUtils.THUMBNAIL_YOUTUBE_URL, trailer.key),
-                holder.imageViewTrailer);
+                trailerViewHolder.imageViewTrailer, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        trailerViewHolder.imageViewPlay.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+
     }
 
     private Trailer getItem(int position) {
@@ -59,10 +76,30 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     class TrailerViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.imageview_trailer)
         ImageView imageViewTrailer;
+        @BindView(R.id.imageview_play_button)
+        ImageView imageViewPlay;
 
         public TrailerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            imageViewPlay.setVisibility(View.GONE);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Trailer trailer = mTrailerList.get(getAdapterPosition());
+                    Intent intent = null;
+                    if (YouTubeIntents.canResolvePlayVideoIntentWithOptions(mContext)) {
+                        intent = YouTubeIntents.createPlayVideoIntentWithOptions(mContext, trailer.key,true,false);
+                    } else {
+                        intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(String.format(Locale.getDefault(), AppUtils.PLAY_YOUTUBE_URL, trailer.key)));
+                    }
+                    mContext.startActivity(intent);
+                }
+            });
         }
+
+
     }
 }

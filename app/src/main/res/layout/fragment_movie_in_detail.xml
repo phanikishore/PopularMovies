@@ -19,70 +19,97 @@
             android:orientation="vertical"
             android:padding="@dimen/dimen_16dip">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/dimen_8dip"
-                app:cardElevation="@dimen/cardview_default_elevation">
-
-                <ImageView
-                    android:id="@+id/imageview_poster"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY" />
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_8dip"
-                android:text="@string/label_movie_title_text" />
-
-            <TextView
-                android:id="@+id/textview_movie_title"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@string/app_name" />
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Body2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_8dip"
-                android:text="@string/label_overview" />
-
-            <TextView
-                android:id="@+id/textview_movie_overview"
-                style="@style/TextAppearance.AppCompat.Body2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/app_name" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_8dip">
+                android:padding="@dimen/dimen_8dip">
 
-                <TextView
-                    android:id="@+id/textview_movie_release_date"
-                    style="@style/TextAppearance.AppCompat.Body1"
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    app:cardCornerRadius="@dimen/dimen_8dip"
+                    app:cardElevation="@dimen/cardview_default_elevation">
+
+                    <ImageView
+                        android:id="@+id/imageview_poster"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="fitXY" />
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:text="@string/app_name" />
+                    android:layout_marginEnd="@dimen/dimen_0dip"
+                    android:layout_marginLeft="@dimen/dimen_8dip"
+                    android:layout_marginRight="@dimen/dimen_0dip"
+                    android:layout_marginStart="@dimen/dimen_8dip"
+                    android:layout_weight="1.5"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textview_movie_rating"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    tools:text="@string/app_name" />
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_movie_title_text" />
 
+                    <TextView
+                        android:id="@+id/textview_movie_title"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/app_name" />
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_8dip"
+                        android:text="@string/label_overview" />
+
+                    <TextView
+                        android:id="@+id/textview_movie_overview"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/app_name" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_8dip">
+
+                        <TextView
+                            android:id="@+id/textview_movie_release_date"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            tools:text="Released 2017-06-22" />
+
+                        <ImageButton
+                            android:id="@+id/imagebutton_favorite"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_favorite_inactive" />
+
+                        <TextView
+                            android:id="@+id/textview_movie_rating"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            tools:text="@string/app_name" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -97,8 +124,9 @@
             <FrameLayout
                 android:id="@+id/framelayout_movie_trailer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:minHeight="150dp"
-                android:layout_marginTop="@dimen/dimen_8dip" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8dip"
+                android:minHeight="150dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,8 +155,9 @@
 
             <com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator
                 android:id="@+id/viewpager_reviews"
-                android:layout_width="match_parent" android:visibility="gone"
-                android:layout_height="match_parent" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
