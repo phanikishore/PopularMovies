@@ -13,4 +13,5 @@ public class MovieItem {
     public int id;
     @SerializedName("title")
     public String title;
+    public transient boolean isFavorite = false;
 }

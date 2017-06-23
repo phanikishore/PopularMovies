@@ -2,7 +2,6 @@ package com.udacity.kishore.popularmovies.dashboard.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +20,8 @@ import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
 import com.udacity.kishore.popularmovies.dashboard.model.MovieItem;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.movie.fragment.MovieDetailsFragment;
-import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +55,8 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
             }
         });
         mRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
-        setSubtitle(PopularMoviesPreference.getInstance().getSortBy());
-        loadData();
+        setSubtitle(getString(R.string.string_popular));
+        loadData(getString(R.string.string_popular));
         setHasOptionsMenu(true);
         return view;
     }
@@ -70,29 +70,39 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         mRecyclerView.getLayoutManager().scrollToPosition(0);
-        PopularMoviesPreference.getInstance().setSortBy(item.getTitle().toString());
         setSubtitle(item.getTitle().toString());
-        loadData();
+        loadData(item.getTitle().toString());
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadData() {
+    private void loadData(String sortBy) {
         mLoadingIndicator.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
-        String sortBy = PopularMoviesPreference.getInstance().getSortBy();
+        //String sortBy = PopularMoviesPreference.getInstance().getSortBy();
         int PAGE_NO = 1;
         if (sortBy.equals(getString(R.string.string_popular))) {
             new DashBoardManager().getPopularMovies(PAGE_NO, this);
         } else if (sortBy.equals(getString(R.string.string_top_rated))) {
             new DashBoardManager().getTopRatedMovies(PAGE_NO, this);
+        } else if (sortBy.equals(getString(R.string.string_favorite))) {
+            new DashBoardManager().getMyFavoriteMovies(getActivity(), this);
         }
     }
+
+    private void markFavoriteItems(List<MovieItem> moviesList) {
+        DashBoardManager manager = new DashBoardManager();
+        for (MovieItem item : moviesList) {
+            item.isFavorite = manager.isMovieListed(getActivity(), item.id);
+        }
+    }
+
 
     @Override
     public void onSuccess(DashBoardResponse response) {
         if (isAdded()) {
             mLoadingIndicator.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
+            markFavoriteItems(response.moviesList);
             mMoviesRecyclerViewAdapter.addData(response.moviesList);
         }
     }
@@ -101,6 +111,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public void onError(PopularMovieException exception) {
         if (isAdded()) {
             mLoadingIndicator.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
         }
     }

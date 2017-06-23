@@ -1,18 +1,23 @@
 package com.udacity.kishore.popularmovies.dashboard.adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.base.BaseActivity;
+import com.udacity.kishore.popularmovies.dashboard.manager.DashBoardManager;
 import com.udacity.kishore.popularmovies.dashboard.model.MovieItem;
+import com.udacity.kishore.popularmovies.database.FavoriteMovieContract;
 import com.udacity.kishore.popularmovies.model.Configuration;
 import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
 
@@ -54,8 +59,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieItem item = getMovieItem(position);
-        holder.textViewTitle.setText(item.title);
         Configuration configuration = PopularMoviesPreference.getInstance().getImageConfiguration();
+        holder.checkBoxFavorite.setChecked(item.isFavorite);
         String uri = TextUtils.join("", new String[]{
                 configuration.imageConfiguration.baseUrl,
                 configuration.imageConfiguration.posterSizeList.get(3),
@@ -73,18 +78,21 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         return mList == null ? 0 : mList.size();
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.tv_movie_title)
-        TextView textViewTitle;
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+        @BindView(R.id.checkbox_favorite)
+        CheckBox checkBoxFavorite;
         @BindView(R.id.imageview_movie_image)
         ImageView imageViewMoviePoster;
         Context context;
+        Toast mToast;
 
         MovieViewHolder(Context context, View itemView) {
             super(itemView);
             this.context = context;
             ButterKnife.bind(this, itemView);
+            checkBoxFavorite.setChecked(false);
             itemView.setOnClickListener(this);
+            checkBoxFavorite.setOnCheckedChangeListener(this);
         }
 
         @Override
@@ -92,6 +100,35 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
             if (mClickListener != null) {
                 mClickListener.OnMovieClicked(getMovieItem(getAdapterPosition()));
             }
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            MovieItem movie = mList.get(getAdapterPosition());
+            if (mToast != null) {
+                mToast.cancel();
+            }
+            DashBoardManager manager = new DashBoardManager();
+            if (isChecked && !manager.isMovieListed(context, movie.id)) {
+                ContentValues values = new ContentValues();
+                values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, movie.id);
+                values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_NAME, movie.title);
+                values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_POSTER, movie.posterPath);
+                Uri uri = context.getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, values);
+                if (uri != null) {
+                    movie.isFavorite = true;
+                    mToast = Toast.makeText(context, R.string.lbl_favorite_added, Toast.LENGTH_SHORT);
+                }
+            } else {
+                int deletedId = 0;
+                Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(movie.id)).build();
+                deletedId = context.getContentResolver().delete(uri, null, null);
+                if (deletedId != 0) {
+                    movie.isFavorite = false;
+                    mToast = Toast.makeText(context, R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
+                }
+            }
+            mToast.show();
         }
     }
 }

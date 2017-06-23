@@ -86,27 +86,24 @@
                             style="@style/TextAppearance.AppCompat.Body1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="1.5"
                             tools:text="Released 2017-06-22" />
 
-                        <ImageButton
-                            android:id="@+id/imagebutton_favorite"
+                        <CheckBox
+                            android:id="@+id/checkbox_favorite"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_favorite_inactive" />
+                            android:layout_weight="0.5"
+                            android:button="@drawable/checkbox_button" />
 
                         <TextView
                             android:id="@+id/textview_movie_rating"
                             style="@style/TextAppearance.AppCompat.Body1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="1.5"
                             android:gravity="end"
                             tools:text="@string/app_name" />
-
 
                     </LinearLayout>
                 </LinearLayout>
