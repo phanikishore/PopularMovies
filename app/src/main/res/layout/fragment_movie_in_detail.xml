@@ -89,8 +89,8 @@
                             android:layout_weight="1.5"
                             tools:text="Released 2017-06-22" />
 
-                        <CheckBox
-                            android:id="@+id/checkbox_favorite"
+                        <ImageView
+                            android:id="@+id/imageview_favorite"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"

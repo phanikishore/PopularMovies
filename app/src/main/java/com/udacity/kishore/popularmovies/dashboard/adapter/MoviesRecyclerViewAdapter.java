@@ -60,7 +60,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieItem item = getMovieItem(position);
         Configuration configuration = PopularMoviesPreference.getInstance().getImageConfiguration();
-        holder.checkBoxFavorite.setChecked(item.isFavorite);
+        holder.imageViewFavorite.setImageResource(item.isFavorite ? R.drawable.ic_favorite_active : R.drawable.ic_favorite_inactive);
         String uri = TextUtils.join("", new String[]{
                 configuration.imageConfiguration.baseUrl,
                 configuration.imageConfiguration.posterSizeList.get(3),
@@ -78,9 +78,9 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         return mList == null ? 0 : mList.size();
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-        @BindView(R.id.checkbox_favorite)
-        CheckBox checkBoxFavorite;
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.imageview_favorite)
+        ImageView imageViewFavorite;
         @BindView(R.id.imageview_movie_image)
         ImageView imageViewMoviePoster;
         Context context;
@@ -90,45 +90,49 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
             super(itemView);
             this.context = context;
             ButterKnife.bind(this, itemView);
-            checkBoxFavorite.setChecked(false);
+            imageViewFavorite.setImageResource(R.drawable.ic_favorite_inactive);
             itemView.setOnClickListener(this);
-            checkBoxFavorite.setOnCheckedChangeListener(this);
+            imageViewFavorite.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) {
-                mClickListener.OnMovieClicked(getMovieItem(getAdapterPosition()));
+            switch (view.getId()) {
+                case R.id.imageview_favorite:
+                    MovieItem movie = mList.get(getAdapterPosition());
+                    if (mToast != null) {
+                        mToast.cancel();
+                    }
+                    DashBoardManager manager = new DashBoardManager();
+                    if (!manager.isMovieListed(context, movie.id)) {
+                        ContentValues values = new ContentValues();
+                        values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, movie.id);
+                        values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_NAME, movie.title);
+                        values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_POSTER, movie.posterPath);
+                        Uri uri = context.getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, values);
+                        if (uri != null) {
+                            movie.isFavorite = true;
+                            imageViewFavorite.setImageResource(R.drawable.ic_favorite_active);
+                            mToast = Toast.makeText(context, R.string.lbl_favorite_added, Toast.LENGTH_SHORT);
+                        }
+                    } else {
+                        int deletedId = 0;
+                        Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(movie.id)).build();
+                        deletedId = context.getContentResolver().delete(uri, null, null);
+                        if (deletedId != 0) {
+                            movie.isFavorite = false;
+                            imageViewFavorite.setImageResource(R.drawable.ic_favorite_inactive);
+                            mToast = Toast.makeText(context, R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
+                        }
+                    }
+                    mToast.show();
+                    break;
+                default:
+                    if (mClickListener != null) {
+                        mClickListener.OnMovieClicked(getMovieItem(getAdapterPosition()));
+                    }
+                    break;
             }
-        }
-
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            MovieItem movie = mList.get(getAdapterPosition());
-            if (mToast != null) {
-                mToast.cancel();
-            }
-            DashBoardManager manager = new DashBoardManager();
-            if (isChecked && !manager.isMovieListed(context, movie.id)) {
-                ContentValues values = new ContentValues();
-                values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, movie.id);
-                values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_NAME, movie.title);
-                values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_POSTER, movie.posterPath);
-                Uri uri = context.getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, values);
-                if (uri != null) {
-                    movie.isFavorite = true;
-                    mToast = Toast.makeText(context, R.string.lbl_favorite_added, Toast.LENGTH_SHORT);
-                }
-            } else {
-                int deletedId = 0;
-                Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(movie.id)).build();
-                deletedId = context.getContentResolver().delete(uri, null, null);
-                if (deletedId != 0) {
-                    movie.isFavorite = false;
-                    mToast = Toast.makeText(context, R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
-                }
-            }
-            mToast.show();
         }
     }
 }

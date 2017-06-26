@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.base.BaseActivity;
 import com.udacity.kishore.popularmovies.base.BaseFragment;
+import com.udacity.kishore.popularmovies.dashboard.manager.DashBoardManager;
 import com.udacity.kishore.popularmovies.database.FavoriteMovieContract;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.movie.adapter.ReviewViewPagerAdapter;
@@ -42,8 +43,8 @@ public class MovieDetailsFragment extends BaseFragment {
     private int mSelectedMovieId;
     private MovieDetailResponse mMovieDetailResponse;
     private ReviewResponse mReviewResponse;
-    @BindView(R.id.checkbox_favorite)
-    CheckBox mCheckBoxFavorite;
+    @BindView(R.id.imageview_favorite)
+    ImageView mImageViewFavorite;
     @BindView(R.id.progressbar_loading_indicator)
     ProgressBar mProgressBar;
     @BindView(R.id.scrollview_container)
@@ -94,13 +95,13 @@ public class MovieDetailsFragment extends BaseFragment {
             }
         });
         replaceChildFragment(R.id.framelayout_movie_trailer, TrailersFragment.newInstance(mSelectedMovieId));
-        mCheckBoxFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mImageViewFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            public void onClick(View view) {
                 if (mToast != null) {
                     mToast.cancel();
                 }
-                if (isChecked) {
+                if (!new DashBoardManager().isMovieListed(getActivity(), mMovieDetailResponse.id)) {
                     ContentValues values = new ContentValues();
                     values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, mMovieDetailResponse.id);
                     values.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_NAME, mMovieDetailResponse.originalTitle);
@@ -108,6 +109,7 @@ public class MovieDetailsFragment extends BaseFragment {
 
                     Uri uri = getActivity().getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, values);
                     if (uri != null) {
+                        mImageViewFavorite.setImageResource(R.drawable.ic_favorite_active);
                         mToast = Toast.makeText(getActivity(), R.string.lbl_favorite_added, Toast.LENGTH_SHORT);
                     }
                 } else {
@@ -115,6 +117,7 @@ public class MovieDetailsFragment extends BaseFragment {
                     Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(mMovieDetailResponse.id)).build();
                     deletedId = getActivity().getContentResolver().delete(uri, null, null);
                     if (deletedId != 0) {
+                        mImageViewFavorite.setImageResource(R.drawable.ic_favorite_inactive);
                         mToast = Toast.makeText(getActivity(), R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
                     }
                 }
@@ -137,6 +140,7 @@ public class MovieDetailsFragment extends BaseFragment {
                     mTextViewOverview.setText(mMovieDetailResponse.overview);
                     mTextViewReleasedOn.setText(String.format(Locale.getDefault(), "Released on %s", mMovieDetailResponse.releaseDate));
                     mTextViewRatings.setText(String.format(Locale.getDefault(), "Rating: %1$,.1f", mMovieDetailResponse.voteAverage));
+                    mImageViewFavorite.setImageResource(new DashBoardManager().isMovieListed(getActivity(), mMovieDetailResponse.id) ? R.drawable.ic_favorite_active : R.drawable.ic_favorite_inactive);
                 }
             }
 
