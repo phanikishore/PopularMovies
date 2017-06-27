@@ -19,4 +19,7 @@
     <dimen name="dimen_18sp">18sp</dimen>
     <dimen name="dimen_dot_size">@dimen/dimen_12dip</dimen>
     <dimen name="dimen_16sp">16sp</dimen>
+
+    <dimen name="dimen_min_height">150dp</dimen>
+    <dimen name="dimen_appbar_default_height">256dp</dimen>
 </resources>

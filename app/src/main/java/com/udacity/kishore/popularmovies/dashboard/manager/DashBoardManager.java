@@ -91,7 +91,6 @@ public class DashBoardManager {
             DashBoardResponse response = new DashBoardResponse();
             response.moviesList = new ArrayList<>();
             try {
-
                 do{
                     MovieItem item = new MovieItem();
                     item.id = resultedCursor.getInt(resultedCursor.getColumnIndexOrThrow(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));

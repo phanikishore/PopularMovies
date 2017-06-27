@@ -6,4 +6,5 @@ package com.udacity.kishore.popularmovies.utils;
 
 public class IntentUtils {
     public static final String INTENT_MOVIE_ID = "INTENT_MOVIE_ID";
+    public static final String INTENT_MOVIE_TYPE = "INTENT_MOVIE_TYPE";
 }

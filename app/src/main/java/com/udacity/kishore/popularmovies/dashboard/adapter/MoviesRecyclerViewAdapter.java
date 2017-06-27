@@ -8,8 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -122,6 +120,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                         if (deletedId != 0) {
                             movie.isFavorite = false;
                             imageViewFavorite.setImageResource(R.drawable.ic_favorite_inactive);
+                            mList.remove(movie);
+                            notifyDataSetChanged();
                             mToast = Toast.makeText(context, R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
                         }
                     }

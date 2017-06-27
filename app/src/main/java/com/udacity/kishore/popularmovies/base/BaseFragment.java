@@ -3,6 +3,7 @@ package com.udacity.kishore.popularmovies.base;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.udacity.kishore.popularmovies.model.ImageConfiguration;
@@ -17,6 +18,19 @@ public class BaseFragment extends DialogFragment {
 
     public void loadImage(String uri, ImageView view) {
         ((BaseActivity) getActivity()).loadImage(uri, view);
+    }
+
+    protected void showToolbar() {
+        ((BaseActivity) getActivity()).showToolBar();
+    }
+
+    protected void hideToolbar() {
+        ((BaseActivity) getActivity()).hideToolBar();
+    }
+
+    protected void setToolbar(Toolbar toolbar) {
+        hideToolbar();
+        ((BaseActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
     public void setTitle(int resId) {
@@ -77,4 +91,21 @@ public class BaseFragment extends DialogFragment {
             pop();
         }
     }
+
+    protected void showLoadingIndicator() {
+        ((BaseActivity) getActivity()).showLoadingIndicator();
+    }
+
+    protected void showProgressBar(int resId, boolean isCancelable) {
+        showProgressBar(getString(resId), isCancelable);
+    }
+
+    protected void showProgressBar(String message, boolean isCancelable) {
+        ((BaseActivity) getActivity()).showProgressBar(message, isCancelable);
+    }
+
+    protected void hideProgressBar() {
+        ((BaseActivity) getActivity()).hideProgressBar();
+    }
+
 }

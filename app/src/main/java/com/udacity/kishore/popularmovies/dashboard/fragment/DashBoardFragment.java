@@ -20,6 +20,7 @@ import com.udacity.kishore.popularmovies.dashboard.model.DashBoardResponse;
 import com.udacity.kishore.popularmovies.dashboard.model.MovieItem;
 import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.movie.fragment.MovieDetailsFragment;
+import com.udacity.kishore.popularmovies.utils.IntentUtils;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     RecyclerView mRecyclerView;
     @BindView(R.id.progressbar_loading_indicator)
     ProgressBar mLoadingIndicator;
+    private String mCategoryType;
 
     public static DashBoardFragment newInstance() {
         return new DashBoardFragment();
@@ -47,6 +49,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dash_board, container, false);
         ButterKnife.bind(this, view);
+        System.out.println("onCreateView, savedInstanceState is NULL? " + (savedInstanceState == null));
         setTitle(R.string.app_name);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(new MoviesRecyclerViewAdapter.OnMovieClickListener() {
             @Override
@@ -55,10 +58,29 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
             }
         });
         mRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
-        setSubtitle(getString(R.string.string_popular));
-        loadData(getString(R.string.string_popular));
+        mCategoryType = getString(R.string.string_popular);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        System.out.println(DashBoardFragment.class.getSimpleName() + " onSaveInstanceState Method called");
+        outState.putString(IntentUtils.INTENT_MOVIE_TYPE, mCategoryType);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        System.out.println(DashBoardFragment.class.getSimpleName() + " onActivityCreated Method called.");
+        System.out.println("savedInstanceState is NULL? " + (savedInstanceState == null));
+        if (savedInstanceState != null) {
+            mCategoryType = savedInstanceState.getString(IntentUtils.INTENT_MOVIE_TYPE);
+        }
+        setSubtitle(mCategoryType);
+        loadData(mCategoryType);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -76,7 +98,9 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     }
 
     private void loadData(String sortBy) {
+        mCategoryType = sortBy;
         mLoadingIndicator.setVisibility(View.VISIBLE);
+        //showLoadingIndicator();
         mRecyclerView.setVisibility(View.INVISIBLE);
         //String sortBy = PopularMoviesPreference.getInstance().getSortBy();
         int PAGE_NO = 1;
@@ -101,6 +125,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public void onSuccess(DashBoardResponse response) {
         if (isAdded()) {
             mLoadingIndicator.setVisibility(View.GONE);
+            //hideProgressBar();
             mRecyclerView.setVisibility(View.VISIBLE);
             markFavoriteItems(response.moviesList);
             mMoviesRecyclerViewAdapter.addData(response.moviesList);
@@ -111,6 +136,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public void onError(PopularMovieException exception) {
         if (isAdded()) {
             mLoadingIndicator.setVisibility(View.GONE);
+            //hideProgressBar();
             mRecyclerView.setVisibility(View.GONE);
             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
         }

@@ -1,15 +1,11 @@
 package com.udacity.kishore.popularmovies.movie.fragment;
 
-import android.content.ContentValues;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -17,22 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.kishore.popularmovies.R;
-import com.udacity.kishore.popularmovies.base.BaseActivity;
 import com.udacity.kishore.popularmovies.base.BaseFragment;
-import com.udacity.kishore.popularmovies.dashboard.manager.DashBoardManager;
-import com.udacity.kishore.popularmovies.database.FavoriteMovieContract;
-import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.movie.adapter.ReviewViewPagerAdapter;
-import com.udacity.kishore.popularmovies.movie.manager.MovieDetailsManager;
 import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
 import com.udacity.kishore.popularmovies.movie.model.ReviewResponse;
-import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
 import com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator;
 
-import java.util.Locale;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Kishore on 6/21/2017.
@@ -76,11 +63,12 @@ public class MovieDetailsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_in_detail, container, false);
-        ButterKnife.bind(this, view);
+        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
+        setToolbar((Toolbar) view.findViewById(R.id.toolbar));
+        //ButterKnife.bind(this, view);
         return view;
     }
-
+/*
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -182,5 +170,5 @@ public class MovieDetailsFragment extends BaseFragment {
                 }
             }
         });
-    }
+    }*/
 }

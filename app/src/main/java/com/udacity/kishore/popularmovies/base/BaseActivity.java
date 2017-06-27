@@ -1,5 +1,6 @@
 package com.udacity.kishore.popularmovies.base;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,12 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.model.ImageConfiguration;
-import com.squareup.picasso.Callback;
 
 /**
  * Created by kishorea on 22/05/17.
@@ -21,6 +23,8 @@ import com.squareup.picasso.Callback;
 public class BaseActivity extends AppCompatActivity {
 
     protected ImageConfiguration mImageConfig;
+    protected ProgressDialog mProgressDialog;
+    protected Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,13 +32,42 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void loadImage(String uri, ImageView view){
-        loadImage(uri,view,new Callback.EmptyCallback());
+    protected void setActionBar(int resId) {
+        mToolbar = (Toolbar) findViewById(resId);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
+    }
+
+    protected void showToolBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+    }
+
+    protected void hideToolBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    public void loadImage(String uri, ImageView view) {
+        loadImage(uri, view, new Callback.EmptyCallback());
     }
 
     public void loadImage(String uri, ImageView view, Callback listener) {
         Callback mListener = listener != null ? listener : new Callback.EmptyCallback();
-        Picasso.with(this).load(uri).into(view,mListener);
+        Picasso.with(this).load(uri).into(view, mListener);
     }
 
     public void setTitle(int resId) {
@@ -87,5 +120,28 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void pop() {
         getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    protected void showLoadingIndicator() {
+        showProgressBar(getString(R.string.label_loading), false);
+    }
+
+    protected void showProgressBar(int resId, boolean isCancelable) {
+        showProgressBar(getString(resId), isCancelable);
+    }
+
+    protected void showProgressBar(String message, boolean isCancelable) {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setMessage(message);
+        mProgressDialog.setCancelable(isCancelable);
+        mProgressDialog.show();
+    }
+
+    protected void hideProgressBar() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 }

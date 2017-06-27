@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  * Created by Kishore on 6/22/2017.
  */
 
-public class FavoriteMovieContract {
+public final class FavoriteMovieContract {
 
     public static final String AUTHORITY = "com.udacity.kishore.popularmovies";
 
