@@ -23,8 +23,8 @@
             android:scaleType="fitXY"
             tools:background="@mipmap/ic_launcher" />
 
-        <CheckBox
-            android:id="@+id/checkbox_favorite"
+        <ImageView
+            android:id="@+id/imageview_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

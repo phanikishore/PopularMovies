@@ -91,14 +91,15 @@ public class DashBoardManager {
             DashBoardResponse response = new DashBoardResponse();
             response.moviesList = new ArrayList<>();
             try {
-                while (resultedCursor.moveToNext()) {
+
+                do{
                     MovieItem item = new MovieItem();
                     item.id = resultedCursor.getInt(resultedCursor.getColumnIndexOrThrow(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_ID));
                     item.title = resultedCursor.getString(resultedCursor.getColumnIndexOrThrow(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_NAME));
                     item.posterPath = resultedCursor.getString(resultedCursor.getColumnIndexOrThrow(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_MOVIE_POSTER));
                     item.isFavorite = !item.isFavorite;
                     response.moviesList.add(item);
-                }
+                }while (resultedCursor.moveToNext());
             } finally {
                 resultedCursor.close();
                 return response;

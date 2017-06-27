@@ -76,8 +76,8 @@
                         android:gravity="end"
                         tools:text="@string/app_name" />
 
-                    <CheckBox
-                        android:id="@+id/checkbox_favorite"
+                    <ImageView
+                        android:id="@+id/imageview_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/checkbox_button" />
