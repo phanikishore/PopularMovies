@@ -15,4 +15,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lbl_favorite_added">Movie added to your favorite list</string>
     <string name="lbl_favorite_removed">Movie removed from your favorite list</string>
+    <string name="lbl_no_favorite_movies">No Movies Listed</string>
 </resources>

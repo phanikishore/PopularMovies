@@ -33,6 +33,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     private List<MovieItem> mList;
     private Toast mToast;
     private OnMovieClickListener mClickListener;
+    private String contentType;
 
     public interface OnMovieClickListener {
         void OnMovieClicked(MovieItem movie);
@@ -42,7 +43,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         this.mClickListener = listener;
     }
 
-    public void addData(List<MovieItem> movieItemList) {
+    public void addData(String content, List<MovieItem> movieItemList) {
+        this.contentType = content;
         mList = movieItemList;
         notifyDataSetChanged();
     }
@@ -120,8 +122,10 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                         if (deletedId != 0) {
                             movie.isFavorite = false;
                             imageViewFavorite.setImageResource(R.drawable.ic_favorite_inactive);
-                            mList.remove(movie);
-                            notifyDataSetChanged();
+                            if (contentType.equalsIgnoreCase(context.getString(R.string.string_favorite))) {
+                                mList.remove(movie);
+                                notifyDataSetChanged();
+                            }
                             mToast = Toast.makeText(context, R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
                         }
                     }

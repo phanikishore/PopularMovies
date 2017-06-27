@@ -19,7 +19,7 @@ public abstract class WebServiceOperation<T> implements Callback<T> {
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         if (response.isSuccessful()) {
-            System.out.println("Response Body: " + new Gson().toJson(response.body()));
+            //System.out.println("Response Body: " + new Gson().toJson(response.body()));
             onSuccess(response.body());
         } else {
             System.out.println("Response Body Error Code: " + response.code() + "\nResponse Error Body: " + response.message());
