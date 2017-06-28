@@ -54,6 +54,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        getSupportFragmentManager().putFragment(outState,
+                Integer.toString(count - 1),
+                getSupportFragmentManager().findFragmentByTag(Integer.toString(count - 1)));
     }
 
     @Override
@@ -99,8 +103,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void replace(int containerId, BaseFragment fragment, boolean addToBackStack) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(containerId, fragment, String.valueOf(fragmentManager.getBackStackEntryCount()));
-        if (addToBackStack) fragmentTransaction.addToBackStack(String.valueOf(fragmentManager.getBackStackEntryCount()));
+        fragmentTransaction.replace(containerId, fragment, Integer.toString(fragmentManager.getBackStackEntryCount()));
+        if (addToBackStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
     }

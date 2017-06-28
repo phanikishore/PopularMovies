@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.kishore.popularmovies.R;
-import com.udacity.kishore.popularmovies.base.BaseActivity;
 import com.udacity.kishore.popularmovies.base.BaseFragment;
 import com.udacity.kishore.popularmovies.dashboard.manager.DashBoardManager;
 import com.udacity.kishore.popularmovies.database.FavoriteMovieContract;
@@ -25,6 +23,7 @@ import com.udacity.kishore.popularmovies.movie.adapter.ReviewViewPagerAdapter;
 import com.udacity.kishore.popularmovies.movie.manager.MovieDetailsManager;
 import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
 import com.udacity.kishore.popularmovies.movie.model.ReviewResponse;
+import com.udacity.kishore.popularmovies.utils.IntentUtils;
 import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
 import com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator;
 
@@ -75,17 +74,21 @@ public class MovieDetailsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_in_detail, container, false);
-        //setToolbar((Toolbar) view.findViewById(R.id.toolbar));
-        ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.fragment_movie_in_detail, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mImageConfig = PopularMoviesPreference.getInstance().getImageConfiguration().imageConfiguration;
+        mSelectedMovieId = savedInstanceState != null ? savedInstanceState.getInt(IntentUtils.INTENT_MOVIE_ID) : mSelectedMovieId;
         setTitle(R.string.string_movie_details);
         setSubtitle("");
         mTextViewMoreReviews.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +116,7 @@ public class MovieDetailsFragment extends BaseFragment {
                         mToast = Toast.makeText(getActivity(), R.string.lbl_favorite_added, Toast.LENGTH_SHORT);
                     }
                 } else {
-                    int deletedId = 0;
+                    int deletedId;
                     Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(mMovieDetailResponse.id)).build();
                     deletedId = getActivity().getContentResolver().delete(uri, null, null);
                     if (deletedId != 0) {
@@ -161,12 +164,12 @@ public class MovieDetailsFragment extends BaseFragment {
             public void onSuccess(ReviewResponse response) {
                 if (isAdded()) {
                     mReviewResponse = response;
-                    mReviewViewPagerAdapter = new ReviewViewPagerAdapter(((BaseActivity) getActivity()).getSupportFragmentManager(), response);
+                    mReviewViewPagerAdapter = new ReviewViewPagerAdapter(getActivity().getSupportFragmentManager(), response);
                     mViewPager.setAdapter(mReviewViewPagerAdapter);
                     if (response.reviewsList.size() > 0) {
-                        mTextViewMoreReviews.setText(String.format(Locale.getDefault(), "See All(%d)", response.reviewsList.size()));
+                        mTextViewMoreReviews.setText(String.format(Locale.getDefault(), getString(R.string.lbl_reviews_count), response.reviewsList.size()));
                     } else {
-                        mTextViewMoreReviews.setText("No Reviews");
+                        mTextViewMoreReviews.setText(R.string.lbl_no_reviews);
                     }
                 }
             }
@@ -182,5 +185,12 @@ public class MovieDetailsFragment extends BaseFragment {
                 }
             }
         });
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(IntentUtils.INTENT_MOVIE_ID, mSelectedMovieId);
+        super.onSaveInstanceState(outState);
     }
 }

@@ -16,4 +16,6 @@
     <string name="lbl_favorite_added">Movie added to your favorite list</string>
     <string name="lbl_favorite_removed">Movie removed from your favorite list</string>
     <string name="lbl_no_favorite_movies">No Movies Listed</string>
+    <string name="lbl_no_reviews">No Reviews</string>
+    <string name="lbl_reviews_count">See All(%d)</string>
 </resources>
