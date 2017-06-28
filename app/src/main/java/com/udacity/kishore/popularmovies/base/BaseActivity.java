@@ -100,7 +100,7 @@ public class BaseActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(containerId, fragment, String.valueOf(fragmentManager.getBackStackEntryCount()));
-        if (addToBackStack) fragmentTransaction.addToBackStack(null);
+        if (addToBackStack) fragmentTransaction.addToBackStack(String.valueOf(fragmentManager.getBackStackEntryCount()));
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
     }

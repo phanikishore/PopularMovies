@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.dashboard.manager.operation.FetchMoviesServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.manager.operation.PopularMoviesServiceOperation;
 import com.udacity.kishore.popularmovies.dashboard.manager.operation.TopRatedMoviesServiceOperation;
@@ -22,7 +23,7 @@ public class DashBoardManager {
 
     public interface DashBoardManagerListener {
         void onSuccess(DashBoardResponse response);
-
+        void onEmpty(String message);
         void onError(PopularMovieException exception);
     }
 
@@ -62,10 +63,10 @@ public class DashBoardManager {
     public void getMyFavoriteMovies(Context context, final DashBoardManagerListener listener) {
         DashBoardResponse response = getFavoriteMovies(context);
         if (listener != null) {
-            if (response != null) {
+            if (response != null && response.moviesList.size()>0) {
                 listener.onSuccess(response);
             } else {
-                listener.onError(new PopularMovieException("No Movies Listed"));
+                listener.onEmpty(context.getString(R.string.lbl_no_favorite_movies));
             }
         }
     }

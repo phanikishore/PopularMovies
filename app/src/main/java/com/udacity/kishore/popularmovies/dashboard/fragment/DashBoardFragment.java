@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.base.BaseFragment;
 import com.udacity.kishore.popularmovies.dashboard.adapter.MoviesRecyclerViewAdapter;
@@ -50,7 +51,6 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
         View view = inflater.inflate(R.layout.fragment_dash_board, container, false);
         ButterKnife.bind(this, view);
         System.out.println("onCreateView, savedInstanceState is NULL? " + (savedInstanceState == null));
-        setTitle(R.string.app_name);
         mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(new MoviesRecyclerViewAdapter.OnMovieClickListener() {
             @Override
             public void OnMovieClicked(MovieItem movie) {
@@ -58,9 +58,10 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
             }
         });
         mRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
-        mCategoryType = getString(R.string.string_popular);
+       /* mCategoryType = getString(R.string.string_popular);
+        setTitle(R.string.app_name);*/
         setHasOptionsMenu(true);
-        setRetainInstance(true);
+        //setRetainInstance(true);
         return view;
     }
 
@@ -68,15 +69,19 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public void onSaveInstanceState(Bundle outState) {
         System.out.println(DashBoardFragment.class.getSimpleName() + " onSaveInstanceState Method called");
         outState.putString(IntentUtils.INTENT_MOVIE_TYPE, mCategoryType);
+        System.out.println(new Gson().toJson(outState));
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         System.out.println(DashBoardFragment.class.getSimpleName() + " onActivityCreated Method called.");
+        //System.out.println(new Gson().toJson(savedInstanceState));
         System.out.println("savedInstanceState is NULL? " + (savedInstanceState == null));
         if (savedInstanceState != null) {
             mCategoryType = savedInstanceState.getString(IntentUtils.INTENT_MOVIE_TYPE);
+        }else{
+            mCategoryType = getString(R.string.string_popular);
         }
         setSubtitle(mCategoryType);
         loadData(mCategoryType);
@@ -128,7 +133,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
             //hideProgressBar();
             mRecyclerView.setVisibility(View.VISIBLE);
             markFavoriteItems(response.moviesList);
-            mMoviesRecyclerViewAdapter.addData(response.moviesList);
+            mMoviesRecyclerViewAdapter.addData(mCategoryType,response.moviesList);
         }
     }
 
@@ -142,4 +147,13 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
         }
     }
 
+    @Override
+    public void onEmpty(String message) {
+        if (isAdded()) {
+            mLoadingIndicator.setVisibility(View.GONE);
+            //hideProgressBar();
+            mRecyclerView.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
+    }
 }
