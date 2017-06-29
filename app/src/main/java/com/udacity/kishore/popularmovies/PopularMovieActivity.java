@@ -11,6 +11,7 @@ public class PopularMovieActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setActionBar(R.id.toolbar);
         if (savedInstanceState == null) {
             replace(R.id.layout_container, DashBoardFragment.newInstance());
         }

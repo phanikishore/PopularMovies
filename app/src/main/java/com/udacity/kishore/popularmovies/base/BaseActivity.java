@@ -40,14 +40,17 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void showToolBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
         }
     }
 
     protected void hideToolBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
         }
     }
 

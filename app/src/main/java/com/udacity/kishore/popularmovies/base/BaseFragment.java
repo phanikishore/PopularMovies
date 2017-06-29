@@ -21,11 +21,15 @@ public class BaseFragment extends DialogFragment {
     }
 
     protected void showToolbar() {
-        ((BaseActivity) getActivity()).showToolBar();
+        if (getActivity() != null) {
+            ((BaseActivity) getActivity()).showToolBar();
+        }
     }
 
     protected void hideToolbar() {
-        ((BaseActivity) getActivity()).hideToolBar();
+        if (getActivity() != null) {
+            ((BaseActivity) getActivity()).hideToolBar();
+        }
     }
 
     protected void setToolbar(Toolbar toolbar) {

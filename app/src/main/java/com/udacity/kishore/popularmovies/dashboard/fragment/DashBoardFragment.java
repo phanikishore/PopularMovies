@@ -49,6 +49,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dash_board, container, false);
         ButterKnife.bind(this, view);
+        showToolbar();
         setTitle(R.string.app_name);
         if(mMoviesRecyclerViewAdapter == null) {
             mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(new MoviesRecyclerViewAdapter.OnMovieClickListener() {
