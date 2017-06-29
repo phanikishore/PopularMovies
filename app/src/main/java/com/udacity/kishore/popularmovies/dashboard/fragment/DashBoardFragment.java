@@ -49,6 +49,7 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dash_board, container, false);
         ButterKnife.bind(this, view);
+        setTitle(R.string.app_name);
         if(mMoviesRecyclerViewAdapter == null) {
             mMoviesRecyclerViewAdapter = new MoviesRecyclerViewAdapter(new MoviesRecyclerViewAdapter.OnMovieClickListener() {
                 @Override
@@ -56,7 +57,12 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
                     replace(R.id.layout_container, MovieDetailsFragment.newInstance(movie.id));
                 }
             });
+            mCategoryType = savedInstanceState != null
+                    ? savedInstanceState.getString(IntentUtils.INTENT_MOVIE_TYPE)
+                    : getString(R.string.string_popular);
         }
+        loadData(mCategoryType);
+        setSubtitle(mCategoryType);
         mRecyclerView.setAdapter(mMoviesRecyclerViewAdapter);
         setHasOptionsMenu(true);
         setRetainInstance(true);
@@ -67,16 +73,6 @@ public class DashBoardFragment extends BaseFragment implements DashBoardManager.
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(IntentUtils.INTENT_MOVIE_TYPE, mCategoryType);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        mCategoryType = savedInstanceState != null
-                ? savedInstanceState.getString(IntentUtils.INTENT_MOVIE_TYPE)
-                : getString(R.string.string_popular);
-        setSubtitle(mCategoryType);
-        loadData(mCategoryType);
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

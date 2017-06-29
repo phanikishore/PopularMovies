@@ -74,7 +74,7 @@ public class MovieDetailsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_movie_in_detail, container, false);
+        return inflater.inflate(R.layout.fragment_movie_info, container, false);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class MovieDetailsFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         setRetainInstance(true);
     }
-
+/*
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -192,5 +192,5 @@ public class MovieDetailsFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(IntentUtils.INTENT_MOVIE_ID, mSelectedMovieId);
         super.onSaveInstanceState(outState);
-    }
+    }*/
 }

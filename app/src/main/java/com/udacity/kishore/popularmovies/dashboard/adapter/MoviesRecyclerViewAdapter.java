@@ -43,6 +43,10 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         this.mClickListener = listener;
     }
 
+    public List<MovieItem> getData(){
+       return mList;
+    }
+
     public void addData(String content, List<MovieItem> movieItemList) {
         this.contentType = content;
         mList = movieItemList;
