@@ -1,25 +1,37 @@
 package com.udacity.kishore.popularmovies.movie.fragment;
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.base.BaseFragment;
+import com.udacity.kishore.popularmovies.dashboard.manager.DashBoardManager;
+import com.udacity.kishore.popularmovies.database.FavoriteMovieContract;
+import com.udacity.kishore.popularmovies.exception.PopularMovieException;
 import com.udacity.kishore.popularmovies.movie.adapter.ReviewViewPagerAdapter;
+import com.udacity.kishore.popularmovies.movie.manager.MovieDetailsManager;
 import com.udacity.kishore.popularmovies.movie.model.MovieDetailResponse;
 import com.udacity.kishore.popularmovies.movie.model.ReviewResponse;
+import com.udacity.kishore.popularmovies.utils.IntentUtils;
+import com.udacity.kishore.popularmovies.utils.PopularMoviesPreference;
 import com.udacity.kishore.popularmovies.widget.ViewPagerWithPageIndicator;
 
+import java.util.Locale;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Optional;
 
 /**
  * Created by Kishore on 6/21/2017.
@@ -30,16 +42,10 @@ public class MovieDetailsFragment extends BaseFragment {
     private int mSelectedMovieId;
     private MovieDetailResponse mMovieDetailResponse;
     private ReviewResponse mReviewResponse;
-    @BindView(R.id.imageview_favorite)
-    ImageView mImageViewFavorite;
-    @BindView(R.id.progressbar_loading_indicator)
-    ProgressBar mProgressBar;
-    @BindView(R.id.scrollview_container)
-    ScrollView mScrollView;
+    @BindView(R.id.fab)
+    FloatingActionButton mFABFavorite;
     @BindView(R.id.imageview_poster)
     ImageView mImageViewPoster;
-    @BindView(R.id.textview_movie_title)
-    TextView mTextViewTitle;
     @BindView(R.id.textview_movie_overview)
     TextView mTextViewOverview;
     @BindView(R.id.textview_movie_release_date)
@@ -66,21 +72,20 @@ public class MovieDetailsFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_movie_info, container, false);
     }
 
+    @Optional
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         setToolbar((Toolbar) view.findViewById(R.id.toolbar));
         setRetainInstance(true);
     }
-/*
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mImageConfig = PopularMoviesPreference.getInstance().getImageConfiguration().imageConfiguration;
         mSelectedMovieId = savedInstanceState != null ? savedInstanceState.getInt(IntentUtils.INTENT_MOVIE_ID) : mSelectedMovieId;
-        setTitle(R.string.string_movie_details);
-        setSubtitle("");
         mTextViewMoreReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +93,7 @@ public class MovieDetailsFragment extends BaseFragment {
             }
         });
         replaceChildFragment(R.id.framelayout_movie_trailer, TrailersFragment.newInstance(mSelectedMovieId));
-        mImageViewFavorite.setOnClickListener(new View.OnClickListener() {
+        mFABFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mToast != null) {
@@ -102,7 +107,7 @@ public class MovieDetailsFragment extends BaseFragment {
 
                     Uri uri = getActivity().getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, values);
                     if (uri != null) {
-                        mImageViewFavorite.setImageResource(R.drawable.ic_favorite_active);
+                        mFABFavorite.setImageResource(R.drawable.ic_favorite_active);
                         mToast = Toast.makeText(getActivity(), R.string.lbl_favorite_added, Toast.LENGTH_SHORT);
                     }
                 } else {
@@ -110,7 +115,7 @@ public class MovieDetailsFragment extends BaseFragment {
                     Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI.buildUpon().appendPath(String.valueOf(mMovieDetailResponse.id)).build();
                     deletedId = getActivity().getContentResolver().delete(uri, null, null);
                     if (deletedId != 0) {
-                        mImageViewFavorite.setImageResource(R.drawable.ic_favorite_inactive);
+                        mFABFavorite.setImageResource(R.drawable.ic_favorite_inactive);
                         mToast = Toast.makeText(getActivity(), R.string.lbl_favorite_removed, Toast.LENGTH_SHORT);
                     }
                 }
@@ -122,25 +127,23 @@ public class MovieDetailsFragment extends BaseFragment {
             @Override
             public void onSuccess(MovieDetailResponse response) {
                 if (isAdded()) {
-                    mProgressBar.setVisibility(View.GONE);
-                    mScrollView.setVisibility(View.VISIBLE);
                     mMovieDetailResponse = response;
                     loadImage(TextUtils.join("", new String[]{
                             mImageConfig.baseUrl,
                             mImageConfig.posterSizeList.get(3),
                             mMovieDetailResponse.posterPath}), mImageViewPoster);
-                    mTextViewTitle.setText(mMovieDetailResponse.originalTitle);
+                    setTitle(mMovieDetailResponse.originalTitle);
+                    setSubtitle("");
                     mTextViewOverview.setText(mMovieDetailResponse.overview);
                     mTextViewReleasedOn.setText(String.format(Locale.getDefault(), "Released on %s", mMovieDetailResponse.releaseDate));
                     mTextViewRatings.setText(String.format(Locale.getDefault(), "Rating: %1$,.1f", mMovieDetailResponse.voteAverage));
-                    mImageViewFavorite.setImageResource(new DashBoardManager().isMovieListed(getActivity(), mMovieDetailResponse.id) ? R.drawable.ic_favorite_active : R.drawable.ic_favorite_inactive);
+                    mFABFavorite.setImageResource(new DashBoardManager().isMovieListed(getActivity(), mMovieDetailResponse.id) ? R.drawable.ic_favorite_active : R.drawable.ic_favorite_inactive);
                 }
             }
 
             @Override
             public void onError(PopularMovieException exception) {
                 if (isAdded()) {
-                    mProgressBar.setVisibility(View.GONE);
                     if (mToast != null) {
                         mToast.cancel();
                     }
@@ -182,5 +185,5 @@ public class MovieDetailsFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(IntentUtils.INTENT_MOVIE_ID, mSelectedMovieId);
         super.onSaveInstanceState(outState);
-    }*/
+    }
 }

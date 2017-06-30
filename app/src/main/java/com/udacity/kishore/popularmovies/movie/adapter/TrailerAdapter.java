@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeIntents;
-import com.squareup.picasso.Picasso;
 import com.udacity.kishore.popularmovies.R;
 import com.udacity.kishore.popularmovies.base.BaseActivity;
 import com.udacity.kishore.popularmovies.movie.model.Trailer;
@@ -78,6 +78,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         ImageView imageViewTrailer;
         @BindView(R.id.imageview_play_button)
         ImageView imageViewPlay;
+        Toast toast;
 
         public TrailerViewHolder(View itemView) {
             super(itemView);
@@ -88,14 +89,22 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
                 public void onClick(View v) {
                     Trailer trailer = mTrailerList.get(getAdapterPosition());
                     Intent intent = null;
-                    if (YouTubeIntents.canResolvePlayVideoIntentWithOptions(mContext)) {
-                        intent = YouTubeIntents.createPlayVideoIntentWithOptions(mContext, trailer.key,true,false);
-                    } else {
-                        intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(String.format(Locale.getDefault(), AppUtils.PLAY_YOUTUBE_URL, trailer.key)));
+                    try {
+                        if (YouTubeIntents.canResolvePlayVideoIntentWithOptions(mContext)) {
+                            intent = YouTubeIntents.createPlayVideoIntentWithOptions(mContext, trailer.key, true, false);
+                        } else {
+                            intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(String.format(Locale.getDefault(), AppUtils.PLAY_YOUTUBE_URL, trailer.key)));
+                        }
+                        mContext.startActivity(intent);
+                    } catch (Exception e) {
+                        if (toast != null) {
+                            toast = null;
+                        }
+                        toast = Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT);
+                        toast.show();
                     }
-                    mContext.startActivity(intent);
                 }
             });
         }

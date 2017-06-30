@@ -42,7 +42,7 @@ public class BaseFragment extends DialogFragment {
     }
 
     protected void setTitle(String title) {
-        ((BaseActivity) getActivity()).setTitle(title);
+        ((BaseActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
     protected void setSubtitle(int resId) {
