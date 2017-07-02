@@ -23,6 +23,7 @@ public class ReviewsFragment extends BaseMovieFragment {
 
     @Override
     public void setAdapter() {
+        showToolbar();
         setTitle("Reviews");
         setSubtitle(String.format(Locale.getDefault(), "%d Reviews", mReviewResponse.reviewsList.size()));
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
